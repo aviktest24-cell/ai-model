@@ -1,0 +1,10 @@
+{
+  "name": "nova-ai-workspace",
+  "version": "2.1.0",
+  "private": true,
+  "description": "A lightweight static AI chat workspace with live model discovery, publisher logos, and rate-limit-aware automatic fallback",
+  "scripts": {
+    "dev": "npx --yes serve .",
+    "preview": "npx --yes serve ."
+  }
+}

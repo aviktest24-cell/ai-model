@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="NOVA AI is a clean online AI workspace for direct answers, writing, and coding.">
+  <title>NOVA AI — Your Workspace</title>
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar" aria-label="Conversation sidebar">
+    <a class="brand" href="./" aria-label="NOVA AI home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 4l4.2 11.8L36 20l-11.8 4.2L20 36l-4.2-11.8L4 20l11.8-4.2z" fill="currentColor"/><circle cx="30" cy="8" r="2" fill="currentColor"/></svg></span>
+      <span class="brand-copy"><strong>NOVA AI</strong><small>YOUR AI WORKSPACE</small></span>
+    </a>
+    <button id="newChatButton" class="new-chat-button"><span class="plus">＋</span><span>New conversation</span><kbd>Ctrl K</kbd></button>
+    <label class="search-box"><span aria-hidden="true">⌕</span><input id="historySearch" type="search" placeholder="Search conversations" autocomplete="off"></label>
+    <div class="section-label"><span>Recent</span><button id="clearHistoryButton" class="text-button" title="Clear all conversations">Clear</button></div>
+    <div id="historyList" class="history-list"></div>
+    <div class="sidebar-bottom">
+      <div class="connection-row"><span id="connectionDot" class="connection-dot"></span><span id="connectionText">Ready</span></div>
+      <div class="sidebar-footnote">Online assistant · Your chat history stays in this browser.</div>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <header class="topbar">
+      <div class="topbar-leading">
+        <button id="mobileMenuButton" class="icon-button mobile-menu" aria-label="Open conversations">☰</button>
+        <div><div id="activeTitle" class="active-title">New conversation</div><div class="active-subtitle">Direct answers, useful ideas, and code</div></div>
+      </div>
+      <div class="topbar-actions">
+        <div class="model-picker" id="modelPicker">
+          <span class="model-label">MODEL</span>
+          <button id="modelPickerButton" class="model-picker-button" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Choose model">
+            <img id="currentModelLogo" class="model-picker-logo" src="public/logos/model-generic.svg" alt="">
+            <span class="model-picker-copy"><strong id="currentModelName">Loading active models…</strong><small id="currentModelDescription">Checking live availability</small></span>
+            <span class="model-picker-caret">⌄</span>
+          </button>
+          <div id="modelMenu" class="model-menu" role="listbox" aria-label="Available models" hidden></div>
+          <select id="modelSelect" aria-label="Choose model" tabindex="-1" hidden><option value="">Loading models…</option></select>
+        </div>
+        <button id="refreshModelsButton" class="icon-button" title="Refresh available models" aria-label="Refresh models">↻</button>
+        <button id="copyConversationButton" class="icon-button" title="Copy conversation" aria-label="Copy conversation">▤</button>
+      </div>
+    </header>
+
+    <section id="chatScroller" class="chat-scroller" aria-label="Conversation">
+      <div class="chat-content">
+        <section id="welcomePanel" class="welcome-panel">
+          <div class="welcome-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 4l4.2 11.8L36 20l-11.8 4.2L20 36l-4.2-11.8L4 20l11.8-4.2z" fill="currentColor"/></svg></div>
+          <p class="eyebrow">A FRESH SPACE TO THINK</p>
+          <h1>What can we<br><span>work on today?</span></h1>
+          <p class="welcome-description">Ask a question, shape an idea, solve a problem, or build something from scratch.</p>
+          <div class="prompt-grid">
+            <button class="prompt-card" data-prompt="Give me 10 original website ideas I can build with HTML, CSS and JavaScript."><span class="prompt-icon">✧</span><span><strong>Explore ideas</strong><small>Discover fresh project concepts</small></span><span class="prompt-arrow">↗</span></button>
+            <button class="prompt-card" data-prompt="Help me write a complete, working HTML project for this idea: "><span class="prompt-icon">⌘</span><span><strong>Build with code</strong><small>Create something that works</small></span><span class="prompt-arrow">↗</span></button>
+            <button class="prompt-card" data-prompt="Explain this topic in simple language, with one clear example: "><span class="prompt-icon">◈</span><span><strong>Learn a topic</strong><small>Understand it without the jargon</small></span><span class="prompt-arrow">↗</span></button>
+            <button class="prompt-card" data-prompt="Give me a practical, concise plan for this goal: "><span class="prompt-icon">◇</span><span><strong>Make a plan</strong><small>Turn a goal into next steps</small></span><span class="prompt-arrow">↗</span></button>
+          </div>
+        </section>
+        <div id="messages" class="messages" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <footer class="composer-area">
+      <div class="composer-container">
+        <form id="composerForm" class="composer">
+          <textarea id="messageInput" rows="1" maxlength="30000" placeholder="Message NOVA AI…" aria-label="Your message"></textarea>
+          <div class="composer-bottom">
+            <div class="composer-tools"><span class="composer-hint" id="composerHint">Enter to send · Shift + Enter for a new line</span><span id="characterCount" class="character-count">0</span></div>
+            <div class="composer-actions"><button id="stopButton" type="button" class="stop-button" hidden>■ Stop</button><button id="sendButton" type="submit" class="send-button" aria-label="Send message"><span>Send</span><b>↑</b></button></div>
+          </div>
+        </form>
+        <div class="composer-disclaimer">AI can make mistakes. Check important information.</div>
+      </div>
+    </footer>
+  </main>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="confirmDialog" class="dialog-backdrop" hidden><section class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><h2 id="dialogTitle">Clear conversations?</h2><p>This removes the saved conversations from this browser.</p><div><button id="cancelClearButton" class="secondary-button">Cancel</button><button id="confirmClearButton" class="danger-button">Clear history</button></div></section></div>
+
+<script src="lib/storage.js"></script>
+<script src="lib/markdown.js"></script>
+<script src="lib/model-catalog.js"></script>
+<script src="lib/providers.js"></script>
+<script src="components/chat-view.js"></script>
+<script src="hooks/chat-controller.js"></script>
+<script src="app/main.js"></script>
+</body>
+</html>
